@@ -42,12 +42,12 @@ bool Frontend::AddFrame(myslam::Frame::Ptr frame) {
     return true;
 }
 
-bool Frontend::Track() {
+bool Frontend::Track() { 
     if (last_frame_) {//若存在上一帧信息
         current_frame_->SetPose(relative_motion_ * last_frame_->Pose());//更新当前帧位姿
     }
 
-    int num_track_last = TrackLastFrame();
+    int num_track_last = TrackLastFrame(); // 帧间光流匹配
     tracking_inliers_ = EstimateCurrentPose();
 
     if (tracking_inliers_ > num_features_tracking_) {
@@ -227,7 +227,7 @@ int Frontend::EstimateCurrentPose() {
     return features.size() - cnt_outlier;
 }
 
-int Frontend::TrackLastFrame() {
+int Frontend::TrackLastFrame() {//帧间光流匹配
     // use LK flow to estimate points in the right image
     std::vector<cv::Point2f> kps_last, kps_current;//创建曾经帧&当前帧关键点集合
 
